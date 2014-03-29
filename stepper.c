@@ -86,9 +86,9 @@ void st_wake_up()
 {
   // Enable steppers by resetting the stepper disable port
   if (bit_istrue(settings.flags,BITFLAG_INVERT_ST_ENABLE)) { 
-    STEPPERS_DISABLE_PORT |= (1<<STEPPERS_DISABLE_BIT); 
+    STEPPERS_DISABLE_PORT |= STEPPERS_DISABLE_MASK; 
   } else { 
-    STEPPERS_DISABLE_PORT &= ~(1<<STEPPERS_DISABLE_BIT);
+    STEPPERS_DISABLE_PORT &= ~(STEPPERS_DISABLE_MASK);
   }
   if (sys.state == STATE_CYCLE) {
     // Initialize stepper output bits
@@ -119,9 +119,9 @@ void st_go_idle()
     // stop and not drift from residual inertial forces at the end of the last movement.
     delay_ms(settings.stepper_idle_lock_time);
     if (bit_istrue(settings.flags,BITFLAG_INVERT_ST_ENABLE)) { 
-      STEPPERS_DISABLE_PORT &= ~(1<<STEPPERS_DISABLE_BIT); 
+      STEPPERS_DISABLE_PORT &= ~(STEPPERS_DISABLE_MASK); 
     } else { 
-      STEPPERS_DISABLE_PORT |= (1<<STEPPERS_DISABLE_BIT); 
+      STEPPERS_DISABLE_PORT |= (STEPPERS_DISABLE_MASK); 
     }   
   }
 }
@@ -352,7 +352,8 @@ void st_init()
   // Configure directions of interface pins
   STEPPING_DDR |= STEPPING_MASK;
   STEPPING_PORT = (STEPPING_PORT & ~STEPPING_MASK) | settings.invert_mask;
-  STEPPERS_DISABLE_DDR |= 1<<STEPPERS_DISABLE_BIT;
+  
+  STEPPERS_DISABLE_DDR |= STEPPERS_DISABLE_MASK ;
 
   // waveform generation = 0100 = CTC
   TCCR1B &= ~(1<<WGM13);

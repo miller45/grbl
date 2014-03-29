@@ -25,6 +25,110 @@
 #ifndef pin_map_h
 #define pin_map_h
 
+
+
+#ifdef PIN_MAP_ARDUINO_FABSCAN // AVR 328p, UNO with fabscan
+
+
+ 
+  // Serial port pins
+  #define SERIAL_RX USART_RX_vect
+  #define SERIAL_UDRE USART_UDRE_vect
+/*
+define X_STEP_PIN 3
+define X_DIR_PIN 4
+define X_ENABLE_PIN 2
+
+define Y_STEP_PIN 6
+define Y_DIR_PIN 7
+define Y_ENABLE_PIN 5
+
+define Z_STEP_PIN 12
+define Z_DIR_PIN 13
+define Z_ENABLE_PIN 11
+   //B (digital pin 8 to 13)
+    //C (analog input pins)
+    //D (digital pins 0 to 7) 
+define MSPIN 8 
+*/
+  // NOTE: All step bit and direction pins must be on the same port.
+  #define STEPPING_DDR       DDRD
+  #define STEPPING_PORT      PORTD
+  #define X_STEP_BIT         3  //
+  #define Y_STEP_BIT         6  //
+  #define Z_STEP_BIT         3  //
+  #define X_DIRECTION_BIT    4  //
+  #define Y_DIRECTION_BIT    7  //
+  #define Z_DIRECTION_BIT    4  //
+#define DUMMIFY_Z_MOVE // zbit bit will not be touched then
+  
+
+  #define STEP_MASK ((1<<X_STEP_BIT)|(1<<Y_STEP_BIT)|(1<<Z_STEP_BIT)) // All step bits
+  #define DIRECTION_MASK ((1<<X_DIRECTION_BIT)|(1<<Y_DIRECTION_BIT)|(1<<Z_DIRECTION_BIT)) // All direction bits
+  #define STEPPING_MASK (STEP_MASK | DIRECTION_MASK) // All stepping-related bits (step/direction)
+
+  #define STEPPERS_DISABLE_DDR    DDRD
+  #define STEPPERS_DISABLE_PORT   PORTD
+  #define STEPPERS_X_DISABLE_BIT    2  // 
+  #define STEPPERS_Y_DISABLE_BIT    5  // 
+  #define STEPPERS_Z_DISABLE_BIT    2  // 
+  #define STEPPERS_DISABLE_MASK (1<<STEPPERS_X_DISABLE_BIT) | (1<<STEPPERS_Y_DISABLE_BIT) | (1<<STEPPERS_Z_DISABLE_BIT)
+
+  // NOTE: All limit bit pins must be on the same port
+  #define LIMIT_DDR       DDRC
+  #define LIMIT_PIN       PINC
+  #define LIMIT_PORT      PORTC
+  #define X_LIMIT_BIT     2  // A1
+  #define Y_LIMIT_BIT     3  // A2
+  #define Z_LIMIT_BIT     4  // A3
+  #define LIMIT_INT       PCIE1  // Pin change interrupt enable pin
+  #define LIMIT_INT_vect  PCINT1_vect 
+  #define LIMIT_PCMSK     PCMSK1 // Pin change interrupt register
+  #define LIMIT_MASK ((1<<X_LIMIT_BIT)|(1<<Y_LIMIT_BIT)|(1<<Z_LIMIT_BIT)) // All limit bits
+  
+#define DUMMIFY_SPINDLE
+#ifndef DUMMIFY_SPINDLE
+  #define SPINDLE_ENABLE_DDR   DDRB
+  #define SPINDLE_ENABLE_PORT  PORTB
+  #define SPINDLE_ENABLE_BIT   2  // PIN9
+
+  #define SPINDLE_DIRECTION_DDR   DDRB
+  #define SPINDLE_DIRECTION_PORT  PORTB
+  #define SPINDLE_DIRECTION_BIT   2  //PIN9
+#endif  
+#define DUMMIFY_COOLANT  /// dont use coolant stuff at all
+#ifndef DUMMIFY_COOLANT
+  #define COOLANT_FLOOD_DDR   DDRC
+  #define COOLANT_FLOOD_PORT  PORTC
+  #define COOLANT_FLOOD_BIT   3  // Uno Analog Pin 3
+
+
+
+    
+    // NOTE: Uno analog pins 4 and 5 are reserved for an i2c interface, and may be installed at
+    // a later date if flash and memory space allows.
+    // #define ENABLE_M7  // Mist coolant disabled by default. Uncomment to enable.
+    #ifdef ENABLE_M7
+  	#define COOLANT_MIST_DDR   DDRC
+  	#define COOLANT_MIST_PORT  PORTC
+  	#define COOLANT_MIST_BIT   4 // Uno Analog Pin 4
+    #endif  
+  
+    // NOTE: All pinouts pins must be on the same port
+    #define PINOUT_DDR       DDRC
+    #define PINOUT_PIN       PINC
+    #define PINOUT_PORT      PORTC
+    #define PIN_RESET        0  // Uno Analog Pin 0
+    #define PIN_FEED_HOLD    1  // Uno Analog Pin 1
+    #define PIN_CYCLE_START  2  // Uno Analog Pin 2
+    #define PINOUT_INT       PCIE1  // Pin change interrupt enable pin
+    #define PINOUT_INT_vect  PCINT1_vect
+    #define PINOUT_PCMSK     PCMSK1 // Pin change interrupt register
+    #define PINOUT_MASK ((1<<PIN_RESET)|(1<<PIN_FEED_HOLD)|(1<<PIN_CYCLE_START))
+    
+  #endif
+#endif
+
 #ifdef PIN_MAP_ARDUINO_UNO // AVR 328p, Officially supported by Grbl.
 
   // Serial port pins

@@ -213,6 +213,9 @@ void report_gcode_parameters()
   } 
 }
 
+void report_limits_state(){
+  printPgmString(PSTR("LIMITS\r\n"));
+}
 
 // Print current gcode parser mode state
 void report_gcode_modes()

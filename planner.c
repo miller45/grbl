@@ -358,7 +358,9 @@ void plan_buffer_line(float x, float y, float z, float feed_rate, uint8_t invert
   block->direction_bits = 0;
   if (target[X_AXIS] < pl.position[X_AXIS]) { block->direction_bits |= (1<<X_DIRECTION_BIT); }
   if (target[Y_AXIS] < pl.position[Y_AXIS]) { block->direction_bits |= (1<<Y_DIRECTION_BIT); }
+#ifndef DUMMIFY_Z_MOVE
   if (target[Z_AXIS] < pl.position[Z_AXIS]) { block->direction_bits |= (1<<Z_DIRECTION_BIT); }
+#endif  
   
   // Number of steps for each axis
   block->steps_x = labs(target[X_AXIS]-pl.position[X_AXIS]);

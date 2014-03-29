@@ -29,14 +29,14 @@
 #define config_h
 
 // Default settings. Used when resetting EEPROM. Change to desired name in defaults.h
-#define DEFAULTS_GENERIC
+#define DEFAULTS_FABSCAN
 
 // Serial baud rate
 #define BAUD_RATE 9600
 
 // Default pin mappings. Grbl officially supports the Arduino Uno only. Other processor types
 // may exist from user-supplied templates or directly user-defined in pin_map.h
-#define PIN_MAP_ARDUINO_UNO
+#define PIN_MAP_ARDUINO_FABSCAN
 
 // Define runtime command special characters. These characters are 'picked-off' directly from the
 // serial read data stream and are not passed to the grbl line execution parser. Select characters
@@ -81,7 +81,7 @@
 // If homing is enabled, homing init lock sets Grbl into an alarm state upon power up. This forces
 // the user to perform the homing cycle (or override the locks) before doing anything else. This is
 // mainly a safety feature to remind the user to home, since position is unknown to Grbl.
-#define HOMING_INIT_LOCK // Comment to disable
+//RK #define HOMING_INIT_LOCK // Comment to disable
 
 // The homing cycle seek and feed rates will adjust so all axes independently move at the homing
 // seek and feed rates regardless of how many axes are in motion simultaneously. If disabled, rates

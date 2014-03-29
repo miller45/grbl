@@ -75,6 +75,8 @@ void report_gcode_parameters();
 // Prints current g-code parser mode state
 void report_gcode_modes();
 
+void report_limits_state();
+
 // Prints startup line
 void report_startup_line(uint8_t n, char *line);
 
