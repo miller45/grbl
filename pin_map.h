@@ -34,44 +34,27 @@
   // Serial port pins
   #define SERIAL_RX USART_RX_vect
   #define SERIAL_UDRE USART_UDRE_vect
-/*
-define X_STEP_PIN 3
-define X_DIR_PIN 4
-define X_ENABLE_PIN 2
 
-define Y_STEP_PIN 6
-define Y_DIR_PIN 7
-define Y_ENABLE_PIN 5
-
-define Z_STEP_PIN 12
-define Z_DIR_PIN 13
-define Z_ENABLE_PIN 11
-   //B (digital pin 8 to 13)
-    //C (analog input pins)
-    //D (digital pins 0 to 7) 
-define MSPIN 8 
-*/
   // NOTE: All step bit and direction pins must be on the same port.
   #define STEPPING_DDR       DDRD
   #define STEPPING_PORT      PORTD
-  #define X_STEP_BIT         3  //
-  #define Y_STEP_BIT         6  //
-  #define Z_STEP_BIT         3  //
-  #define X_DIRECTION_BIT    4  //
-  #define Y_DIRECTION_BIT    7  //
-  #define Z_DIRECTION_BIT    4  //
-#define DUMMIFY_Z_MOVE // zbit bit will not be touched then
+  #define X_STEP_BIT         6  // 
+  #define Y_STEP_BIT         3  //
+  #define Z_STEP_BIT         2  // D2
+  #define X_DIRECTION_BIT    7  //
+  #define Y_DIRECTION_BIT    4  //
+  #define Z_DIRECTION_BIT    5  //
   
 
   #define STEP_MASK ((1<<X_STEP_BIT)|(1<<Y_STEP_BIT)|(1<<Z_STEP_BIT)) // All step bits
   #define DIRECTION_MASK ((1<<X_DIRECTION_BIT)|(1<<Y_DIRECTION_BIT)|(1<<Z_DIRECTION_BIT)) // All direction bits
   #define STEPPING_MASK (STEP_MASK | DIRECTION_MASK) // All stepping-related bits (step/direction)
 
-  #define STEPPERS_DISABLE_DDR    DDRD
-  #define STEPPERS_DISABLE_PORT   PORTD
-  #define STEPPERS_X_DISABLE_BIT    2  // 
-  #define STEPPERS_Y_DISABLE_BIT    5  // 
-  #define STEPPERS_Z_DISABLE_BIT    2  // 
+  #define STEPPERS_DISABLE_DDR    DDRB
+  #define STEPPERS_DISABLE_PORT   PORTB
+  #define STEPPERS_X_DISABLE_BIT    1  // 9 (PIN 8 is MSPIN)
+  #define STEPPERS_Y_DISABLE_BIT    2 // 10
+  #define STEPPERS_Z_DISABLE_BIT    3 // 11
   #define STEPPERS_DISABLE_MASK (1<<STEPPERS_X_DISABLE_BIT) | (1<<STEPPERS_Y_DISABLE_BIT) | (1<<STEPPERS_Z_DISABLE_BIT)
 
   // NOTE: All limit bit pins must be on the same port

@@ -69,7 +69,7 @@
 // slower than this value, except when sleeping. This parameter overrides the minimum planner speed.
 // This is primarily used to guarantee that the end of a movement is always reached and not stop to
 // never reach its target. This parameter should always be greater than zero.
-#define MINIMUM_STEPS_PER_MINUTE 800 // (steps/min) - Integer value only
+#define MINIMUM_STEPS_PER_MINUTE 100 // (steps/min) - Integer value only
 
 // Time delay increments performed during a dwell. The default value is set at 50ms, which provides
 // a maximum time delay of roughly 55 minutes, more than enough for most any application. Increasing
@@ -169,7 +169,7 @@
 // NOTE: Uncomment to enable. The recommended delay must be > 3us and the total step pulse
 // time, which includes the Grbl settings pulse microseconds, must not exceed 127us. Reported
 // successful values for certain setups have ranged from 10 to 20us.
-// #define STEP_PULSE_DELAY 10 // Step pulse delay in microseconds. Default disabled.
+//#define STEP_PULSE_DELAY 100 // Step pulse delay in microseconds. Default disabled.
 
 // Uncomment the following define if you are using hardware that drives high when your limits
 // are reached. You will need to ensure that you have appropriate pull-down resistors on the
