@@ -252,7 +252,7 @@ void mc_go_home()
   
   // The gcode parser position circumvented by the pull-off maneuver, so sync position vectors.
   sys_sync_current_position();
-
+ 
   // If hard limits feature enabled, re-enable hard limits pin change register after homing cycle.
   if (bit_istrue(settings.flags,BITFLAG_HARD_LIMIT_ENABLE)) { LIMIT_PCMSK |= LIMIT_MASK; }
   // Finished! 

@@ -61,9 +61,9 @@
   #define LIMIT_DDR       DDRC
   #define LIMIT_PIN       PINC
   #define LIMIT_PORT      PORTC
-  #define X_LIMIT_BIT     2  // A1
-  #define Y_LIMIT_BIT     3  // A2
-  #define Z_LIMIT_BIT     4  // A3
+  #define X_LIMIT_BIT     0  // A1
+  #define Y_LIMIT_BIT     1  // A2
+  #define Z_LIMIT_BIT     2  // A3
   #define LIMIT_INT       PCIE1  // Pin change interrupt enable pin
   #define LIMIT_INT_vect  PCINT1_vect 
   #define LIMIT_PCMSK     PCMSK1 // Pin change interrupt register
@@ -91,26 +91,34 @@
     // NOTE: Uno analog pins 4 and 5 are reserved for an i2c interface, and may be installed at
     // a later date if flash and memory space allows.
     // #define ENABLE_M7  // Mist coolant disabled by default. Uncomment to enable.
-    #ifdef ENABLE_M7
+#ifdef ENABLE_M7
   	#define COOLANT_MIST_DDR   DDRC
   	#define COOLANT_MIST_PORT  PORTC
   	#define COOLANT_MIST_BIT   4 // Uno Analog Pin 4
     #endif  
-  
-    // NOTE: All pinouts pins must be on the same port
-    #define PINOUT_DDR       DDRC
-    #define PINOUT_PIN       PINC
-    #define PINOUT_PORT      PORTC
-    #define PIN_RESET        0  // Uno Analog Pin 0
-    #define PIN_FEED_HOLD    1  // Uno Analog Pin 1
-    #define PIN_CYCLE_START  2  // Uno Analog Pin 2
-    #define PINOUT_INT       PCIE1  // Pin change interrupt enable pin
-    #define PINOUT_INT_vect  PCINT1_vect
-    #define PINOUT_PCMSK     PCMSK1 // Pin change interrupt register
-    #define PINOUT_MASK ((1<<PIN_RESET)|(1<<PIN_FEED_HOLD)|(1<<PIN_CYCLE_START))
-    
-  #endif
+    #endif
 #endif
+
+    // NOTE: All pinouts pins must be on the same port
+    #define PINOUT_DDR       DDRB
+    #define PINOUT_PIN       PINB
+    #define PINOUT_PORT      PORTB
+	
+#define IGNORE_RESET
+    #define PIN_RESET        4  // Uno Analog Pin 0
+    #define PIN_FEED_HOLD    4  // Uno Analog Pin 1
+#define IGNORE_CYCLE_START	
+    #define PIN_CYCLE_START  4  // Uno Analog Pin 2
+#define DISABLE_PINOUT
+#ifndef DISABLE_PINOUT
+    #define PINOUT_INT       PCIE0  // Pin change interrupt enable pin
+    #define PINOUT_INT_vect  PCINT0_vect
+    #define PINOUT_PCMSK     PCMSK0 // Pin change interrupt register
+	#define PINOUT_MASK ((1<<PIN_FEED_HOLD))
+//    #define PINOUT_MASK ((1<<PIN_RESET)|(1<<PIN_FEED_HOLD)|(1<<PIN_CYCLE_START))
+#endif
+    
+
 
 #ifdef PIN_MAP_ARDUINO_UNO // AVR 328p, Officially supported by Grbl.
 

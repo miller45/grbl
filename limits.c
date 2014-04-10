@@ -250,6 +250,9 @@ void limits_go_home()
       delay_ms(settings.homing_debounce_delay);
     }
   }
+  #ifdef DEFAULT_HOMING_ENDSTOP_X
+      gc_set_current_position(DEFAULT_HOMING_ENDSTOP_X*settings.steps_per_mm[X_AXIS],sys.position[Y_AXIS],sys.position[Z_AXIS]);
+  #endif
 
   st_go_idle(); // Call main stepper shutdown routine.  
 }

@@ -48,7 +48,7 @@ void protocol_init()
 {
   protocol_reset_line_buffer();
   report_init_message(); // Welcome message   
-#ifdef USE_COOLANT   
+#ifndef DISABLE_PINOUT
   PINOUT_DDR &= ~(PINOUT_MASK); // Set as input pins
   PINOUT_PORT |= PINOUT_MASK; // Enable internal pull-up resistors. Normal high operation.
   PINOUT_PCMSK |= PINOUT_MASK;   // Enable specific pins of the Pin Change Interrupt
@@ -72,7 +72,7 @@ void protocol_execute_startup()
   }  
 }
 
-#ifdef USE_COOLANT
+#ifndef DISABLE_PINOUT
 // Pin change interrupt for pin-out commands, i.e. cycle start, feed hold, and reset. Sets
 // only the runtime command execute variable to have the main program execute these when 
 // its ready. This works exactly like the character-based runtime commands when picked off
@@ -81,13 +81,20 @@ ISR(PINOUT_INT_vect)
 {
   // Enter only if any pinout pin is actively low.
   if ((PINOUT_PIN & PINOUT_MASK) ^ PINOUT_MASK) { 
+    #ifndef IGNORE_RESET
     if (bit_isfalse(PINOUT_PIN,bit(PIN_RESET))) {
       mc_reset();
-    } else if (bit_isfalse(PINOUT_PIN,bit(PIN_FEED_HOLD))) {
+    } else 
+	#endif
+    if (bit_isfalse(PINOUT_PIN,bit(PIN_FEED_HOLD))) {
       sys.execute |= EXEC_FEED_HOLD; 
-    } else if (bit_isfalse(PINOUT_PIN,bit(PIN_CYCLE_START))) {
+    }
+	#ifndef IGNORE_CYCLE_START
+	else 
+	if (bit_isfalse(PINOUT_PIN,bit(PIN_CYCLE_START))) {
       sys.execute |= EXEC_CYCLE_START;
     }
+	#endif
   }
 }
 #endif

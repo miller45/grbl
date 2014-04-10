@@ -217,19 +217,19 @@ void report_limits_state(){
   uint8_t limit_state;
   printPgmString(PSTR("LIMITS\r\n"));
   limit_state = LIMIT_PIN;
-  printPgmString(PSTR("X "));
+  printPgmString(PSTR("X:"));
   if (limit_state & (1<<X_LIMIT_BIT)) { 
      printPgmString(PSTR("1"));
   }else{
      printPgmString(PSTR("0"));
   }
-  printPgmString(PSTR("Y "));
+  printPgmString(PSTR(" Y:"));
   if (limit_state & (1<<Y_LIMIT_BIT)) { 
      printPgmString(PSTR("1"));
   }else{
      printPgmString(PSTR("0"));
   }
-  printPgmString(PSTR("Z "));
+  printPgmString(PSTR(" Z:"));
   if (limit_state & (1<<Z_LIMIT_BIT)) { 
      printPgmString(PSTR("1"));
   }else{
