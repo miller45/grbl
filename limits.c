@@ -225,14 +225,14 @@ void limits_go_home()
 {  
   // Enable only the steppers, not the cycle. Cycle should be inactive/complete.
   st_wake_up();
-  
+  bool hdir=false;
   // Search to engage all axes limit switches at faster homing seek rate.
-  homing_cycle(HOMING_SEARCH_CYCLE_0, true, false, settings.homing_seek_rate);  // Search cycle 0
+  homing_cycle(HOMING_SEARCH_CYCLE_0, hdir, false/*invertpin*/, settings.homing_seek_rate);  // Search cycle 0
   #ifdef HOMING_SEARCH_CYCLE_1
-    homing_cycle(HOMING_SEARCH_CYCLE_1, true, false, settings.homing_seek_rate);  // Search cycle 1
+    homing_cycle(HOMING_SEARCH_CYCLE_1, hdir, false/*invertpin*/, settings.homing_seek_rate);  // Search cycle 1
   #endif
   #ifdef HOMING_SEARCH_CYCLE_2
-    homing_cycle(HOMING_SEARCH_CYCLE_2, true, false, settings.homing_seek_rate);  // Search cycle 2
+    homing_cycle(HOMING_SEARCH_CYCLE_2, hdir, false/*invertpin*/, settings.homing_seek_rate);  // Search cycle 2
   #endif
   delay_ms(settings.homing_debounce_delay); // Delay to debounce signal
     
@@ -241,17 +241,18 @@ void limits_go_home()
   int8_t n_cycle = N_HOMING_LOCATE_CYCLE;
   while (n_cycle--) {
     // Leave all switches to release them. After cycles complete, this is machine zero.
-    homing_cycle(HOMING_LOCATE_CYCLE, false, true, settings.homing_feed_rate);
+    homing_cycle(HOMING_LOCATE_CYCLE, !hdir, true/*invertpin*/, settings.homing_feed_rate);
     delay_ms(settings.homing_debounce_delay);
     
     if (n_cycle > 0) {
       // Re-approach all switches to re-engage them.
-      homing_cycle(HOMING_LOCATE_CYCLE, true, false, settings.homing_feed_rate);
+      homing_cycle(HOMING_LOCATE_CYCLE, hdir, false/*invertpin*/, settings.homing_feed_rate);
       delay_ms(settings.homing_debounce_delay);
     }
   }
   #ifdef DEFAULT_HOMING_ENDSTOP_X
-      gc_set_current_position(DEFAULT_HOMING_ENDSTOP_X*settings.steps_per_mm[X_AXIS],sys.position[Y_AXIS],sys.position[Z_AXIS]);
+  //TODO remove this
+      //gc_set_current_position(DEFAULT_HOMING_ENDSTOP_X*settings.steps_per_mm[X_AXIS],sys.position[Y_AXIS],sys.position[Z_AXIS]);
   #endif
 
   st_go_idle(); // Call main stepper shutdown routine.  

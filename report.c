@@ -234,9 +234,29 @@ void report_limits_state(){
      printPgmString(PSTR("1"));
   }else{
      printPgmString(PSTR("0"));
+  }  
+  
+  #ifndef DISABLE_PINOUT
+  uint8_t pinout_state;
+  pinout_state=PINOUT_PIN;
+  printPgmString(PSTR(" F:"));
+  if(pinout_state & (1<<PIN_FEED_HOLD)){
+    printPgmString(PSTR("1"));
+  }else{
+    printPgmString(PSTR("0"));
   }
+  printPgmString(PSTR(" C:"));
+  if(pinout_state & (1<<PIN_CYCLE_START)){
+    printPgmString(PSTR("1"));
+  }else{
+    printPgmString(PSTR("0"));
+  }
+  #endif
+  
   printPgmString(PSTR("\r\n"));
 }
+
+
 
 // Print current gcode parser mode state
 void report_gcode_modes()

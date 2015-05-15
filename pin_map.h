@@ -28,8 +28,18 @@
 
 
 #ifdef PIN_MAP_ARDUINO_FABSCAN // AVR 328p, UNO with fabscan
-
-
+  //pins used so far
+  // PORTD 2-7
+  // 2-7 USED
+  
+  // PORTB 8-13
+ // 8-11 used
+ // 12-13 free
+ 
+ // PORTC  A0-5 or 14-20
+ // AIN0-AIN2 used
+ // AIN3 (LED) free?
+ // AIN4-5 reserved for I2C
  
   // Serial port pins
   #define SERIAL_RX USART_RX_vect
@@ -41,9 +51,9 @@
   #define X_STEP_BIT         6  // 
   #define Y_STEP_BIT         3  //
   #define Z_STEP_BIT         2  // D2
-  #define X_DIRECTION_BIT    7  //
-  #define Y_DIRECTION_BIT    4  //
-  #define Z_DIRECTION_BIT    5  //
+  #define X_DIRECTION_BIT    7  //128
+  #define Y_DIRECTION_BIT    4  //16
+  #define Z_DIRECTION_BIT    5  //32
   
 
   #define STEP_MASK ((1<<X_STEP_BIT)|(1<<Y_STEP_BIT)|(1<<Z_STEP_BIT)) // All step bits
@@ -61,9 +71,9 @@
   #define LIMIT_DDR       DDRC
   #define LIMIT_PIN       PINC
   #define LIMIT_PORT      PORTC
-  #define X_LIMIT_BIT     0  // A1
-  #define Y_LIMIT_BIT     1  // A2
-  #define Z_LIMIT_BIT     2  // A3
+  #define X_LIMIT_BIT     0  // A0
+  #define Y_LIMIT_BIT     1  // A1
+  #define Z_LIMIT_BIT     2  // A2
   #define LIMIT_INT       PCIE1  // Pin change interrupt enable pin
   #define LIMIT_INT_vect  PCINT1_vect 
   #define LIMIT_PCMSK     PCMSK1 // Pin change interrupt register
@@ -79,43 +89,29 @@
   #define SPINDLE_DIRECTION_PORT  PORTB
   #define SPINDLE_DIRECTION_BIT   2  //PIN9
 #endif  
-#define DUMMIFY_COOLANT  /// dont use coolant stuff at all
-#ifndef DUMMIFY_COOLANT
-  #define COOLANT_FLOOD_DDR   DDRC
-  #define COOLANT_FLOOD_PORT  PORTC
-  #define COOLANT_FLOOD_BIT   3  // Uno Analog Pin 3
 
-
-
-    
-    // NOTE: Uno analog pins 4 and 5 are reserved for an i2c interface, and may be installed at
-    // a later date if flash and memory space allows.
-    // #define ENABLE_M7  // Mist coolant disabled by default. Uncomment to enable.
-#ifdef ENABLE_M7
-  	#define COOLANT_MIST_DDR   DDRC
-  	#define COOLANT_MIST_PORT  PORTC
-  	#define COOLANT_MIST_BIT   4 // Uno Analog Pin 4
-    #endif  
-    #endif
-#endif
+	#define DUMMIFY_COOLANT  /// dont use coolant stuff at all
+	//REMOVED COOLANT consts
 
     // NOTE: All pinouts pins must be on the same port
     #define PINOUT_DDR       DDRB
     #define PINOUT_PIN       PINB
     #define PINOUT_PORT      PORTB
 	
-#define IGNORE_RESET
-    #define PIN_RESET        4  // Uno Analog Pin 0
-    #define PIN_FEED_HOLD    4  // Uno Analog Pin 1
-#define IGNORE_CYCLE_START	
-    #define PIN_CYCLE_START  4  // Uno Analog Pin 2
-#define DISABLE_PINOUT
-#ifndef DISABLE_PINOUT
+	#define IGNORE_RESET
+    //#define PIN_RESET        4  //  
+    #define PIN_FEED_HOLD    4  // Uno D12
+//#define IGNORE_CYCLE_START	
+    #define PIN_CYCLE_START  5  // Uno D13
+//#define DISABLE_PINOUT
+	//#ifndef DISABLE_PINOUT
     #define PINOUT_INT       PCIE0  // Pin change interrupt enable pin
     #define PINOUT_INT_vect  PCINT0_vect
     #define PINOUT_PCMSK     PCMSK0 // Pin change interrupt register
-	#define PINOUT_MASK ((1<<PIN_FEED_HOLD))
+	#define PINOUT_MASK ((1<<PIN_FEED_HOLD)|(1<<PIN_CYCLE_START))
 //    #define PINOUT_MASK ((1<<PIN_RESET)|(1<<PIN_FEED_HOLD)|(1<<PIN_CYCLE_START))
+	//#endif
+
 #endif
     
 
